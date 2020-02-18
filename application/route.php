@@ -8,6 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+use think\Route;
+
+Route::get('home','index/index/index');
+Route::get('info','index/index/getWxUserInfo');
 
 return [
     '__pattern__' => [
