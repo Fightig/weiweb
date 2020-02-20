@@ -43,14 +43,41 @@ class Index extends Controller
         $info = file_get_contents($url_end);
 
         $info = json_decode($info);
+
+        // 判断用户是否已存在 存在->更新 不存在->新增
+        $home = new IndexModel();
+        $res = $home->getUserInfo(['openid'=>$info['openid']]);
+        if (!empty($res)){
+            // 更新
+            $home->updateUserInfo(['nickname'=>$info[''],'head_img'=>$info['']],['openid'=>$info['openid']]);
+        }else{
+            // 新增
+            $home->addUserInfo();
+        }
+
         dump($info);
     }
 
+    /**
+     * 获取用户列表
+     * @param pageNumber 第几页
+     */
     public function getUserList()
     {
-        $param = input('post.');
+        $num = input('post.pageNumber');
 
         $home = new IndexModel();
+    }
+
+    /**
+     * 获取用户详情
+     * @param id 用户ID
+     * @return string
+     */
+    public function getDetail()
+    {
+        $id = input('get.id');
+        return '';
     }
 
 }
