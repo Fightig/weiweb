@@ -11,8 +11,7 @@
 use think\Route;
 
 Route::get('home','index/index/index');
-Route::get('info','index/index/getWxUserInfo');
-Route::post('list','index/index/getUserList');
+Route::post('list','index/index/getData');
 Route::get('detail/:id','index/index/getDetail');
 
 return [

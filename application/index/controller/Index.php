@@ -59,18 +59,35 @@ class Index extends Controller
 //    }
     public function index()
     {
-        return '';
+        // 查询第一页数据
+        $limit = 35;
+        $offset = 0;
+        $home = new IndexModel();
+        $data = $home->getListByWhere('',$offset,$limit);
+        return view('/index',['data'=>$data]);
     }
 
     /**
-     * 获取用户列表
-     * @param pageNumber 第几页
+     * 查询分页数据
+     * @param pageNumber 页数 searchText 搜索内容
+     * @return json
      */
-    public function getUserList()
+    public function getData()
     {
-        $num = input('post.pageNumber');
+        $param = input('param.');
+
+        $limit = 35;
+        $offset = ($param['pageNumber'] - 1) * $limit;
+
+        $where = [];
+        if (!empty($param['searchText'])){
+            $where['nickname'] = ['like','%'. $param['searchText'] .'%'];
+        }
 
         $home = new IndexModel();
+        $data = $home->getListByWhere($where,$offset,$limit);
+
+        return json(['code'=>200,'data'=>$data,'msg'=>'请求成功']);
     }
 
     /**
@@ -80,8 +97,13 @@ class Index extends Controller
      */
     public function getDetail()
     {
-        $id = input('get.id');
-        return '';
+        $id = input('param.id');
+
+        // 查询用户详情
+        $home = new IndexModel();
+        $info = $home->getOneUserInfo(['id'=>$id]);
+
+        return view('/detail',['info'=>$info]);
     }
 
 }
